@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self';">
+    <title>UPN QR Studio</title>
+    <meta name="description"
+        content="Generiraj in natisni UPN QR plačilne naloge. Brezplačno spletno orodje za slovenska plačila.">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+    <!-- SEO: Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="UPN QR Studio">
+    <meta property="og:description"
+        content="Generiraj in natisni UPN QR plačilne naloge. Brezplačno spletno orodje za slovenska plačila.">
+    <meta property="og:locale" content="sl_SI">
+
+    <!-- SEO: Twitter/X Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="UPN QR Studio">
+    <meta name="twitter:description"
+        content="Generiraj in natisni UPN QR plačilne naloge. Brezplačno spletno orodje za slovenska plačila.">
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#FA4616">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="fonts/inter.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/wiki.css">
+    <script src="js/vendor/qrcodegen-nayuki-v1.8.0-es6.js" defer></script>
+    <script src="js/vendor/modern-screenshot-4.6.8.min.js" defer></script>
+    <script src="js/vendor/pdf-lib-1.17.1.min.js" defer></script>
+    <script src="js/vendor/fontkit-1.1.1.umd.min.js" defer></script>
+    <script type="module" src="js/wiki.js" defer></script>
+    <script type="module" src="js/app.js" defer></script>
+</head>
+
+<body>
+
+    <main role="main">
+        <header>
+            <div class="header-badge" aria-hidden="true">
+                <img src="assets/logo.svg" alt="" width="48" height="48">
+            </div>
+            <div>
+                <h1>UPN QR Studio</h1>
+                <p>Vnosi se samodejno shranijo v tem brskalniku po kratkem premoru. Datuma plačila in roka se ne shranita. Na skupni napravi po uporabi kliknite »Nov nalog«.</p>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="install-app-btn" id="install-app" hidden>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3v12"></path>
+                        <path d="m7 10 5 5 5-5"></path>
+                        <path d="M5 17v3h14v-3"></path>
+                    </svg>
+                    <span>Namesti aplikacijo</span>
+                </button>
+                <!-- Private Mode Toggle -->
+                <button type="button" class="private-mode-btn" id="private-mode-toggle"
+                    aria-label="Preklopi zasebni način (onemogoči shranjevanje v brskalnik)"
+                    title="Zasebni način: vnosi se ne shranjujejo v brskalnik">
+                    <svg class="private-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span class="private-mode-label">Zasebno</span>
+                </button>
+
+                <!-- Reset Button -->
+                <button type="button" class="reset-form-btn" id="reset-form"
+                    title="Ponastavi celoten obrazec / Nov nalog">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                    </svg>
+                    <span>Nov nalog</span>
+                </button>
+
+                <!-- Theme Toggle -->
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Preklopi temno/svetlo temo">
+                    <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <aside class="footer-support-card top-support-card" aria-label="Podpora projekta">
+            <div class="footer-support-content">
+                <div class="footer-support-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <strong>UPN QR Studio je 100% brezplačen in brez oglasov</strong>
+                    <p>Če vam orodje prihrani čas pri plačevanju in poslovanju, lahko z donacijo podprete delovanje strežnikov in razvoj novih brezplačnih orodij.</p>
+                </div>
+            </div>
+            <div class="support-links">
+                <a href="https://mihaknific.github.io/podpora" target="_blank" rel="noopener noreferrer"
+                    class="support-btn support-btn-primary" aria-label="Podprite razvoj projekta">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                    </svg>
+                    <span>Podpri projekt</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- GLOBAL WARNING MESSAGE BOX -->
+        <div id="global-warning-box" class="global-warning hidden" role="alert" aria-live="assertive">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                </path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <div>
+                <strong>Obrazec vsebuje napake!</strong>
+                <ul id="global-warning-list"></ul>
+            </div>
+        </div>
+
+        <form id="upn-form">
+            <div class="transaction-selector">
+                <div class="transaction-type-options">
+                    <span class="label-row">
+                        <span id="transaction-type-label">Vrsta transakcije</span>
+                        <button type="button" class="info-btn" popovertarget="pop-transaction-type">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <div class="checkbox-row">
+                        <div class="check-group" role="group" aria-labelledby="transaction-type-label">
+                            <label class="check-label" title="Označite pri gotovinskem vplačilu na okencu">
+                                <input type="checkbox" data-bind="polog">
+                                <span>Polog</span>
+                            </label>
+                            <span class="check-divider"></span>
+                            <label class="check-label" title="Označite pri dvigu gotovine">
+                                <input type="checkbox" data-bind="dvig">
+                                <span>Dvig</span>
+                            </label>
+                            <span class="check-divider"></span>
+                            <label class="check-label check-humanitarian"
+                                title="Za registrirane izdajatelje UPN QR v humanitarne namene; znesek in podatki plačnika so lahko prazni.">
+                                <input type="checkbox" data-bind="humanitarno">
+                                <span>Humanitarni</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="urgency-selector">
+                    <span class="label-row">
+                        <span id="urgency-label">Nujnost plačila</span>
+                        <button type="button" class="info-btn" popovertarget="pop-urgency">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <div class="checkbox-row">
+                        <div class="check-group" role="group" aria-labelledby="urgency-label">
+                            <label class="check-label check-urgent"
+                                title="Označi nalog kot nujen; banka lahko zaračuna višjo provizijo.">
+                                <input type="checkbox" data-bind="nujno" aria-describedby="urgency-mode-hint">
+                                <span>Nujno</span>
+                            </label>
+                        </div>
+                    </div>
+                    <small id="urgency-mode-hint" class="field-hint" hidden></small>
+                </div>
+            </div>
+
+            <!-- PLAČNIK -->
+            <fieldset>
+                <legend class="legend-flex">
+                    <span>Plačnik</span>
+                    <button type="button" class="clear-fieldset-btn" data-clear="payer"
+                        aria-label="Počisti plačnika" data-tooltip="Počisti plačnika">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </button>
+                </legend>
+                <hr>
+                <label>
+                    <span class="label-row">Ime plačnika <span class="optional-badge"
+                            id="badge-payer-name">neobvezno</span></span>
+                    <input type="text" id="payerName" data-bind="payerName" data-uppercase="true"
+                        placeholder="JANEZ NOVAK">
+                </label>
+                <label>
+                    <span class="label-row">Ulica in hišna št. plačnika <span class="optional-badge" id="badge-payer-address">obvezno</span></span>
+                    <input type="text" id="payerAddress" data-bind="payerAddress" data-uppercase="true"
+                        placeholder="NOVAKOVA ULICA 123">
+                </label>
+                <label>
+                    <span class="label-row">Poštna št. in kraj plačnika <span class="optional-badge" id="badge-payer-city">obvezno</span></span>
+                    <input type="text" id="payerCity" data-bind="payerCity" data-uppercase="true"
+                        placeholder="1000 LJUBLJANA">
+                </label>
+                <label>
+                    <span class="label-row">
+                        IBAN plačnika
+                        <span class="optional-badge" id="badge-payer-iban">neobvezno</span>
+                        <button type="button" class="info-btn" popovertarget="pop-payer-iban">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <div class="input-wrapper">
+                        <input type="text" id="payerIban" data-bind="payerIban" data-uppercase="true"
+                            placeholder="SI56 ...">
+                        <button type="button" class="input-icon-btn copy-btn" title="Kopiraj IBAN"
+                            data-copy-target="payerIban">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </label>
+                <div class="gap-2">
+                    <div class="ref-group">
+                        <span class="label-row">
+                            Referenca plačnika
+                            <span class="optional-badge" id="badge-payer-ref">neobvezno</span>
+                            <button type="button" class="info-btn" popovertarget="pop-payer-ref">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                            </button>
+                        </span>
+                        <div class="input-wrapper">
+                            <div class="ref-inline" style="flex-grow: 1;">
+                                <select id="payerRefCode" data-bind="payerRefCode" class="ref-model-select">
+                                    <option value="">—</option>
+                                    <option value="SI00">SI00</option>
+                                    <option value="SI01">SI01</option>
+                                    <option value="SI02">SI02</option>
+                                    <option value="SI03">SI03</option>
+                                    <option value="SI04">SI04</option>
+                                    <option value="SI05">SI05</option>
+                                    <option value="SI06">SI06</option>
+                                    <option value="SI07">SI07</option>
+                                    <option value="SI08">SI08</option>
+                                    <option value="SI09">SI09</option>
+                                    <option value="SI10">SI10</option>
+                                    <option value="SI11">SI11</option>
+                                    <option value="SI12">SI12</option>
+                                    <option value="SI18">SI18</option>
+                                    <option value="SI19">SI19</option>
+                                    <option value="SI21">SI21</option>
+                                    <option value="SI22" disabled>SI22 (samo FURS)</option>
+                                    <option value="SI23">SI23</option>
+                                    <option value="SI28">SI28</option>
+                                    <option value="SI31">SI31</option>
+                                    <option value="SI32" disabled>SI32 (samo FURS)</option>
+                                    <option value="SI38">SI38</option>
+                                    <option value="SI40">SI40</option>
+                                    <option value="SI41">SI41</option>
+                                    <option value="SI48">SI48</option>
+                                    <option value="SI49">SI49</option>
+                                    <option value="SI51">SI51</option>
+                                    <option value="SI55">SI55</option>
+                                    <option value="SI58" disabled>SI58 (samo sistem EZR)</option>
+                                    <option value="SI99">SI99</option>
+                                    <option value="RF">RF</option>
+                                </select>
+                                <input type="text" id="payerRef" data-bind="payerRef" data-uppercase="true"
+                                    placeholder="Številka sklica" class="ref-value-input">
+                            </div>
+                            <button type="button" class="input-icon-btn magic-wand-btn" id="magic-wand-payer"
+                                title="Izračunaj kontrolno številko" data-magic-target="payerRef"
+                                style="display: none;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                                    </path>
+                                    <path d="m14 7 3 3"></path>
+                                    <path d="M5 6v.01"></path>
+                                    <path d="M19 13v.01"></path>
+                                    <path d="M10 20v.01"></path>
+                                    <path d="M19 19v.01"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <span id="humanitarian-reference-hint" class="field-hint" hidden>
+                        Za prosto številčno vsebino (npr. 12345) izberite SI00. Vpišite sklic, ki ga je določil izdajatelj.
+                    </span>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend class="legend-flex">
+                    <span>Prejemnik</span>
+                    <button type="button" class="clear-fieldset-btn" data-clear="recipient"
+                        aria-label="Počisti prejemnika" data-tooltip="Počisti prejemnika">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </button>
+                </legend>
+                <hr>
+                <label>
+                    <span class="label-row">Ime prejemnika <span class="optional-badge"
+                            id="badge-recipient-name">obvezno</span></span>
+                    <input type="text" id="recipientName" data-bind="recipientName" data-uppercase="true"
+                        placeholder="PODJETJE D.O.O.">
+                </label>
+                <label>
+                    <span class="label-row">Ulica in hišna št. prejemnika <span class="optional-badge" id="badge-recipient-address">obvezno</span></span>
+                    <input type="text" id="recipientAddress" data-bind="recipientAddress" data-uppercase="true"
+                        placeholder="GOSPODINJSKA ULICA 10">
+                </label>
+                <label>
+                    <span class="label-row">Poštna št. in kraj prejemnika <span class="optional-badge" id="badge-recipient-city">obvezno</span></span>
+                    <input type="text" id="recipientCity" data-bind="recipientCity" data-uppercase="true"
+                        placeholder="2000 MARIBOR">
+                </label>
+                <label>
+                    <span class="label-row">
+                        IBAN prejemnika
+                        <span class="optional-badge" id="badge-recipient-iban">obvezno</span>
+                        <button type="button" class="info-btn" popovertarget="pop-recipient-iban">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <div class="input-wrapper">
+                        <input type="text" id="recipientIban" data-bind="recipientIban" data-uppercase="true"
+                            placeholder="SI56 ...">
+                        <button type="button" class="input-icon-btn copy-btn" title="Kopiraj IBAN"
+                            data-copy-target="recipientIban">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </label>
+                <div class="ref-group">
+                    <span class="label-row">
+                        Referenca prejemnika
+                        <span class="optional-badge" id="badge-recipient-ref">neobvezno</span>
+                        <button type="button" class="info-btn" popovertarget="pop-recipient-ref">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <div class="input-wrapper">
+                        <div class="ref-inline" style="flex-grow: 1;">
+                            <select id="recipientRefCode" data-bind="recipientRefCode" class="ref-model-select">
+                                <option value="">—</option>
+                                <option value="SI00">SI00</option>
+                                <option value="SI01">SI01</option>
+                                <option value="SI02">SI02</option>
+                                <option value="SI03">SI03</option>
+                                <option value="SI04">SI04</option>
+                                <option value="SI05">SI05</option>
+                                <option value="SI06">SI06</option>
+                                <option value="SI07">SI07</option>
+                                <option value="SI08">SI08</option>
+                                <option value="SI09">SI09</option>
+                                <option value="SI10">SI10</option>
+                                <option value="SI11">SI11</option>
+                                <option value="SI12">SI12</option>
+                                <option value="SI18">SI18</option>
+                                <option value="SI19">SI19</option>
+                                <option value="SI21">SI21</option>
+                                <option value="SI22" disabled>SI22 (samo FURS)</option>
+                                <option value="SI23">SI23</option>
+                                <option value="SI28">SI28</option>
+                                <option value="SI31">SI31</option>
+                                <option value="SI32" disabled>SI32 (samo FURS)</option>
+                                <option value="SI38">SI38</option>
+                                <option value="SI40">SI40</option>
+                                <option value="SI41">SI41</option>
+                                <option value="SI48">SI48</option>
+                                <option value="SI49">SI49</option>
+                                <option value="SI51">SI51</option>
+                                <option value="SI55">SI55</option>
+                                <option value="SI58" disabled>SI58 (samo sistem EZR)</option>
+                                <option value="SI99">SI99</option>
+                                <option value="RF">RF</option>
+                            </select>
+                            <input type="text" id="recipientRef" data-bind="recipientRef" data-uppercase="true"
+                                placeholder="Številka sklica" class="ref-value-input">
+                        </div>
+                        <button type="button" class="input-icon-btn magic-wand-btn" id="magic-wand-recipient"
+                            title="Izračunaj kontrolno številko" data-magic-target="recipientRef"
+                            style="display: none;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                                </path>
+                                <path d="m14 7 3 3"></path>
+                                <path d="M5 6v.01"></path>
+                                <path d="M19 13v.01"></path>
+                                <path d="M10 20v.01"></path>
+                                <path d="M19 19v.01"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- PODROBNOSTI -->
+            <fieldset>
+                <legend class="legend-flex">
+                    <span>Podrobnosti</span>
+                    <button type="button" class="clear-fieldset-btn" data-clear="amount"
+                        aria-label="Počisti znesek in namen" data-tooltip="Počisti znesek in namen">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </button>
+                </legend>
+                <hr>
+                <div class="row">
+                    <label class="currency">
+                        <span class="label-row">
+                            Valuta
+                            <button type="button" class="info-btn" popovertarget="pop-currency">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                            </button>
+                        </span>
+                        <select id="currency" data-bind="currency" disabled aria-label="Valuta">
+                            <!-- Najpogostejše valute na vrhu -->
+                            <option value="EUR" selected>EUR</option>
+                            <option value="USD">USD</option>
+                            <option value="CHF">CHF</option>
+                            <option value="GBP">GBP</option>
+                            <!-- Ostale po abecedi -->
+                            <option value="AED">AED</option>
+                            <option value="AFN">AFN</option>
+                            <option value="ALL">ALL</option>
+                            <option value="AMD">AMD</option>
+                            <option value="ANG">ANG</option>
+                            <option value="AOA">AOA</option>
+                            <option value="ARS">ARS</option>
+                            <option value="AUD">AUD</option>
+                            <option value="AWG">AWG</option>
+                            <option value="AZN">AZN</option>
+                            <option value="BAM">BAM</option>
+                            <option value="BBD">BBD</option>
+                            <option value="BDT">BDT</option>
+                            <option value="BGN">BGN</option>
+                            <option value="BHD">BHD</option>
+                            <option value="BIF">BIF</option>
+                            <option value="BMD">BMD</option>
+                            <option value="BND">BND</option>
+                            <option value="BOB">BOB</option>
+                            <option value="BRL">BRL</option>
+                            <option value="BSD">BSD</option>
+                            <option value="BTN">BTN</option>
+                            <option value="BWP">BWP</option>
+                            <option value="BYN">BYN</option>
+                            <option value="BZD">BZD</option>
+                            <option value="CAD">CAD</option>
+                            <option value="CDF">CDF</option>
+                            <option value="CLP">CLP</option>
+                            <option value="CNY">CNY</option>
+                            <option value="COP">COP</option>
+                            <option value="CRC">CRC</option>
+                            <option value="CUP">CUP</option>
+                            <option value="CVE">CVE</option>
+                            <option value="CZK">CZK</option>
+                            <option value="DJF">DJF</option>
+                            <option value="DKK">DKK</option>
+                            <option value="DOP">DOP</option>
+                            <option value="DZD">DZD</option>
+                            <option value="EGP">EGP</option>
+                            <option value="ERN">ERN</option>
+                            <option value="ETB">ETB</option>
+                            <option value="FJD">FJD</option>
+                            <option value="FKP">FKP</option>
+                            <option value="GEL">GEL</option>
+                            <option value="GHS">GHS</option>
+                            <option value="GIP">GIP</option>
+                            <option value="GMD">GMD</option>
+                            <option value="GNF">GNF</option>
+                            <option value="GTQ">GTQ</option>
+                            <option value="GYD">GYD</option>
+                            <option value="HKD">HKD</option>
+                            <option value="HNL">HNL</option>
+                            <option value="HTG">HTG</option>
+                            <option value="HUF">HUF</option>
+                            <option value="IDR">IDR</option>
+                            <option value="INR">INR</option>
+                            <option value="IQD">IQD</option>
+                            <option value="IRR">IRR</option>
+                            <option value="ISK">ISK</option>
+                            <option value="JMD">JMD</option>
+                            <option value="JOD">JOD</option>
+                            <option value="JPY">JPY</option>
+                            <option value="KES">KES</option>
+                            <option value="KGS">KGS</option>
+                            <option value="KHR">KHR</option>
+                            <option value="KMF">KMF</option>
+                            <option value="KPW">KPW</option>
+                            <option value="KRW">KRW</option>
+                            <option value="KWD">KWD</option>
+                            <option value="KYD">KYD</option>
+                            <option value="KZT">KZT</option>
+                            <option value="LAK">LAK</option>
+                            <option value="LBP">LBP</option>
+                            <option value="LKR">LKR</option>
+                            <option value="LRD">LRD</option>
+                            <option value="LSL">LSL</option>
+                            <option value="LYD">LYD</option>
+                            <option value="MAD">MAD</option>
+                            <option value="MDL">MDL</option>
+                            <option value="MGA">MGA</option>
+                            <option value="MKD">MKD</option>
+                            <option value="MMK">MMK</option>
+                            <option value="MNT">MNT</option>
+                            <option value="MOP">MOP</option>
+                            <option value="MRU">MRU</option>
+                            <option value="MUR">MUR</option>
+                            <option value="MVR">MVR</option>
+                            <option value="MWK">MWK</option>
+                            <option value="MXN">MXN</option>
+                            <option value="MYR">MYR</option>
+                            <option value="MZN">MZN</option>
+                            <option value="NAD">NAD</option>
+                            <option value="NGN">NGN</option>
+                            <option value="NIO">NIO</option>
+                            <option value="NOK">NOK</option>
+                            <option value="NPR">NPR</option>
+                            <option value="NZD">NZD</option>
+                            <option value="OMR">OMR</option>
+                            <option value="PAB">PAB</option>
+                            <option value="PEN">PEN</option>
+                            <option value="PGK">PGK</option>
+                            <option value="PHP">PHP</option>
+                            <option value="PKR">PKR</option>
+                            <option value="PLN">PLN</option>
+                            <option value="PYG">PYG</option>
+                            <option value="QAR">QAR</option>
+                            <option value="RON">RON</option>
+                            <option value="RSD">RSD</option>
+                            <option value="RUB">RUB</option>
+                            <option value="RWF">RWF</option>
+                            <option value="SAR">SAR</option>
+                            <option value="SBD">SBD</option>
+                            <option value="SCR">SCR</option>
+                            <option value="SDG">SDG</option>
+                            <option value="SEK">SEK</option>
+                            <option value="SGD">SGD</option>
+                            <option value="SHP">SHP</option>
+                            <option value="SLL">SLL</option>
+                            <option value="SOS">SOS</option>
+                            <option value="SRD">SRD</option>
+                            <option value="SSP">SSP</option>
+                            <option value="STN">STN</option>
+                            <option value="SYP">SYP</option>
+                            <option value="SZL">SZL</option>
+                            <option value="THB">THB</option>
+                            <option value="TJS">TJS</option>
+                            <option value="TMT">TMT</option>
+                            <option value="TND">TND</option>
+                            <option value="TOP">TOP</option>
+                            <option value="TRY">TRY</option>
+                            <option value="TTD">TTD</option>
+                            <option value="TWD">TWD</option>
+                            <option value="TZS">TZS</option>
+                            <option value="UAH">UAH</option>
+                            <option value="UGX">UGX</option>
+                            <option value="UYU">UYU</option>
+                            <option value="UZS">UZS</option>
+                            <option value="VES">VES</option>
+                            <option value="VND">VND</option>
+                            <option value="VUV">VUV</option>
+                            <option value="WST">WST</option>
+                            <option value="XAF">XAF</option>
+                            <option value="XCD">XCD</option>
+                            <option value="XOF">XOF</option>
+                            <option value="XPF">XPF</option>
+                            <option value="YER">YER</option>
+                            <option value="ZAR">ZAR</option>
+                            <option value="ZMW">ZMW</option>
+                            <option value="ZWL">ZWL</option>
+                        </select>
+                    </label>
+                    <label class="grow">
+                        <span class="label-row">
+                            Znesek
+                            <span class="optional-badge" id="badge-amount">obvezno</span>
+                            <button type="button" class="info-btn" popovertarget="pop-amount">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                            </button>
+                        </span>
+                        <input type="number" id="amount" data-bind="amount" placeholder="0,00" step="0.01">
+                    </label>
+                </div>
+                <div class="gap-2">
+                    <label class="grow" id="payment-date-field"><span class="label-row">Datum plačila <span class="optional-badge"
+                                id="badge-payment-date">neobvezno</span></span>
+                        <input type="date" id="paymentDate" data-bind="paymentDate">
+                    </label>
+                    <label class="grow"><span class="label-row">Rok plačila <span class="optional-badge"
+                                id="badge-due-date">neobvezno</span></span>
+                        <input type="date" id="dueDate" data-bind="dueDate">
+                    </label>
+                </div>
+                <label>
+                    <span class="label-row">Namen plačila <span class="optional-badge" id="badge-purpose">obvezno</span></span>
+                    <input type="text" id="purpose" data-bind="purpose" data-uppercase="true"
+                        placeholder="PLAČILO RAČUNA 123">
+                </label>
+
+                <label>
+                    <span class="label-row">
+                        Koda namena
+                        <span class="optional-badge" id="badge-purpose-code">obvezno</span>
+                        <button type="button" class="info-btn" popovertarget="pop-purpose-code">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </button>
+                    </span>
+                    <select id="purposeCode" data-bind="purposeCode">
+                        <option value="">— Izberi kodo namena —</option>
+                    </select>
+                </label>
+            </fieldset>
+        </form>
+
+        <hr>
+
+        <!-- DOWNLOAD / EXPORT ACTIONS -->
+        <div class="actions">
+            <!-- Skupina 1: UPN Obrazec -->
+            <div class="dropdown-wrapper">
+                <div class="split-button-group">
+                    <button type="button" id="btn-upn-exact" class="action-btn action-btn-primary split-main">
+                        <span>UPN PDF (210×99 mm)</span>
+                    </button>
+                    <button type="button" id="btn-upn-more" class="action-btn action-btn-primary split-arrow"
+                        aria-label="Več možnosti za UPN">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="4 7 10 13 16 7"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="dropdown-menu" id="upn-dropdown" hidden>
+                    <div class="dropdown-group">
+                        <span class="dropdown-title">Tiskanje na papir</span>
+                        <button type="button" id="btn-upn-a4" class="dropdown-item">
+                            A4 papir <small>(nalog na dnu)</small>
+                        </button>
+                    </div>
+
+                    <div class="dropdown-group">
+                        <span class="dropdown-title">Slikovni zajem (Zaslonska slika)</span>
+                        <button type="button" id="btn-upn-capture-pdf" class="dropdown-item">
+                            UPN PDF <small>Slikovni</small>
+                        </button>
+                        <button type="button" id="btn-upn-png" class="dropdown-item">
+                            UPN PNG <small>Slika</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skupina 2: QR Koda -->
+            <div class="dropdown-wrapper">
+                <div class="split-button-group">
+                    <button type="button" id="btn-qr-png" class="action-btn split-main">
+                        <span>QR koda (PNG)</span>
+                    </button>
+                    <button type="button" id="btn-qr-more" class="action-btn split-arrow"
+                        aria-label="Več možnosti za QR">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="4 7 10 13 16 7"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="dropdown-menu" id="qr-dropdown" hidden>
+                    <button type="button" id="btn-qr-pdf" class="dropdown-item">
+                        QR koda <small>PDF dokument</small>
+                    </button>
+                    <button type="button" id="btn-toggle-upn-inspect" class="dropdown-item">
+                        Vsebina kode <small>20 vrstic po ZBS</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="qr-terminal-card" id="upn-qr-inspect" hidden>
+            <div class="qr-terminal-header">
+                <div class="qr-terminal-title">
+                    <span class="qr-terminal-name">UPNQR • ISO-8859-2</span>
+                    <span class="qr-terminal-sub">20 vrstic</span>
+                </div>
+                <div class="qr-terminal-actions">
+                    <div class="qr-switch-group" role="tablist" aria-label="Način prikaza UPN QR">
+                        <button type="button" class="qr-switch-btn active" data-view="table" role="tab" aria-selected="true" title="Tabelarični prikaz z opisi polj">Tabela</button>
+                        <button type="button" class="qr-switch-btn" data-view="raw" role="tab" aria-selected="false" title="Dobesedno surovo besedilo z vrsticami">Surovo besedilo</button>
+                    </div>
+                    <button type="button" class="qr-copy-btn" id="btn-copy-upn-raw" title="Kopiraj surov zapis v odložišče">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Kopiraj</span>
+                    </button>
+                    <button type="button" class="qr-close-btn" id="btn-close-upn-inspect" aria-label="Zapri pregledovalnik">✕</button>
+                </div>
+            </div>
+            <div class="qr-terminal-body" id="upn-qr-inspect-content">
+                <span class="qr-inspect-empty">Izpolnite obrazec za veljaven UPN QR zapis.</span>
+            </div>
+            <div class="qr-terminal-raw-wrap" id="upn-qr-inspect-raw-wrap" hidden>
+                <div class="qr-raw-lines" id="upn-qr-inspect-raw-lines"></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="upn-wrap" role="region" aria-label="Predogled UPN naloga" tabindex="0">
+            <div class="upn">
+                <div class="left-line"></div>
+                <div class="top-bg"></div>
+                <div class="bottom-bg"></div>
+
+                <!-- LEFT -->
+                <div class="part-left">
+                    <div class="label a1 black">UPN QR - potrdilo</div>
+                    <div class="label a2">Ime plačnika</div>
+                    <div class="field a3" data-field="payerComposite" data-uppercase="true"></div>
+                    <div class="label a4">Namen in rok plačila</div>
+                    <div class="field a5" data-field="purposeComposite" data-uppercase="true"></div>
+                    <div class="label a6">Znesek</div>
+                    <div class="label a7 black" data-field="currency" data-uppercase="true">EUR</div>
+                    <div class="field a8" data-field="amount" data-align="right"></div>
+                    <div class="label a9">IBAN in referenca prejemnika</div>
+                    <div class="field a10" data-field="recipientComposite" data-uppercase="true"></div>
+                    <div class="label a11">Ime prejemnika</div>
+                    <div class="field a12" data-field="recipientDetails" data-uppercase="true"></div>
+                    <div class="field a13"></div>
+                    <div class="label a14">Prostor za vpise ponudnika plačilnih storitev</div>
+                </div>
+
+                <!-- RIGHT -->
+                <div class="part-right">
+                    <div class="label a17">Koda QR</div>
+                    <div class="field a25">
+                        <div class="qr-placeholder" id="qr-code"></div>
+                    </div>
+
+                    <div class="label a18">IBAN plačnika</div>
+                    <div class="field a22" data-field="payerIban">
+                        <div class="blocks">
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(3 * 3.75mm);"></div>
+                        </div>
+                    </div>
+
+                    <div class="label a19">Polog</div>
+                    <div class="label a20">Dvig</div>
+                    <div class="field a23 field-x" data-field="polog"></div>
+                    <div class="field a24 field-x" data-field="dvig"></div>
+
+                    <div class="label a26">Referenca plačnika</div>
+                    <div class="field ticked a27" data-field="payerRefCode"></div>
+                    <div class="field ticked a28" data-field="payerRef"></div>
+
+                    <div class="label a29">Ime, ulica in kraj plačnika</div>
+                    <div class="field a30" data-field="payerName" data-uppercase="true"></div>
+                    <div class="upn-data a31" data-field="payerAddress" data-uppercase="true"></div>
+                    <div class="upn-data a32" data-field="payerCity" data-uppercase="true"></div>
+
+                    <div class="label a33 black" data-field="currency" data-uppercase="true">EUR</div>
+                    <div class="label a34">Znesek</div>
+                    <div class="field a37" data-field="amount" data-align="right">
+                        <div class="blocks">
+                            <div class="chunk" style="width: calc(3 * 3.75mm);">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="chunk" style="width: calc(3 * 3.75mm);">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="chunk" style="width: calc(3 * 3.75mm);">
+                                <div class="comma"></div>
+                            </div>
+                            <div class="chunk" style="flex: 1;"></div>
+                        </div>
+                    </div>
+
+                    <div class="label a35">Datum plačila</div>
+                    <div class="field a38" data-field="paymentDate">
+                        <div class="blocks">
+                            <div class="chunk" style="width: calc(2 * 3.75mm);">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="chunk" style="width: calc(2 * 3.75mm);">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="chunk" style="flex: 1;"></div>
+                        </div>
+                    </div>
+
+                    <div class="label a36">Nujno</div>
+                    <div class="field a39 field-x" data-field="nujno"></div>
+
+                    <div class="label a40">Koda namena</div>
+                    <div class="label a41">Namen plačila</div>
+                    <div class="label a42">Rok plačila</div>
+
+                    <div class="field ticked a43" data-field="purposeCode"></div>
+                    <div class="field ticked a44" data-field="purpose" data-uppercase="true"></div>
+                    <div class="field a45" data-field="dueDate">
+                        <div class="blocks">
+                            <div class="chunk" style="width: calc(2 * 3.75mm);">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="chunk" style="width: calc(2 * 3.75mm);">
+                                <div class="dot"></div>
+                            </div>
+                            <div class="chunk" style="flex: 1;"></div>
+                        </div>
+                    </div>
+
+                    <div class="label a46">IBAN prejemnika</div>
+                    <div class="field a47" data-field="recipientIban">
+                        <div class="blocks">
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(4 * 3.75mm);"></div>
+                            <div class="chunk" style="width: calc(2 * 3.75mm);"></div>
+                        </div>
+                    </div>
+                    <div class="label a48 black">UPN QR</div>
+
+                    <div class="label a49">Referenca prejemnika</div>
+                    <div class="field ticked a50" data-field="recipientRefCode"></div>
+                    <div class="field ticked a51" data-field="recipientRef"></div>
+
+                    <div class="field a52"></div>
+                    <div class="a57"></div>
+                    <div class="label a58">Podpis plačnika (neobvezno žig)</div>
+
+                    <div class="label a53">Ime, ulica in kraj prejemnika</div>
+                    <div class="field a54" data-field="recipientName" data-uppercase="true"></div>
+                    <div class="upn-data a55" data-field="recipientAddress" data-uppercase="true"></div>
+                    <div class="upn-data a56" data-field="recipientCity" data-uppercase="true"></div>
+
+                    <div class="a59"></div>
+                    <div class="label a60">Prostor za vpise ponudnika plačilnih storitev</div>
+                </div>
+
+                <!-- MARKERJI (OCR registration marks) NA VRHU -->
+                <div class="marker a15"></div>
+                <div class="marker a16"></div>
+                <div class="marker a62"></div>
+
+                <!-- A21 – Vodila za QR kodo NA VRHU -->
+                <div class="a21 h top-left"></div>
+                <div class="a21 h top-right"></div>
+                <div class="a21 h bottom-left"></div>
+                <div class="a21 h bottom-right"></div>
+                <div class="a21 v top-left"></div>
+                <div class="a21 v top-right"></div>
+                <div class="a21 v bottom-left"></div>
+                <div class="a21 v bottom-right"></div>
+
+                <!-- A61 – Prostor za logotip tiskarja -->
+                <div class="a61"></div>
+            </div>
+        </div>
+
+        <section class="epc-qr-section" aria-labelledby="epc-qr-heading">
+            <div class="epc-qr-copy">
+                <h2 id="epc-qr-heading">EPC QR / GiroCode (SEPA plačila)</h2>
+
+                <p>Ta QR uporablja EPC zapis za SEPA kreditni prenos (BCD/SCT). Podpora je odvisna od posamezne bančne aplikacije in ni zagotovljena niti pri tujih bankah ali neobankah. Pred uporabo preverite združljivost in pred potrditvijo plačila vedno preverite podatke, ki jih pokaže vaša bančna aplikacija.</p>
+
+                <p class="epc-note">Podatki (prejemnik, IBAN, znesek in namen) se samodejno prevzamejo iz zgornjega obrazca. Ta koda je namenjena neposrednemu skeniranju s telefonom in se <strong>ne</strong> tiska na UPN položnico.</p>
+
+                <div class="epc-field-summary">
+                    <p><strong>Vključeno v EPC QR:</strong> prejemnik, IBAN, znesek, koda namena in namen plačila.</p>
+                    <p><strong>Izpuščeno iz kode:</strong> podatki plačnika, sklic prejemnika (SI/RF), datumi ter oznaka nujnosti.</p>
+                </div>
+                <div class="epc-qr-fields">
+                    <label for="epc-bic">BIC (neobvezno; EPC različica 002)</label>
+                    <input id="epc-bic" class="epc-text-input epc-data-input" data-bind="epcBic" data-uppercase="true"
+                        maxlength="11" autocomplete="off" spellcheck="false">
+                    <small>BIC se ne določi samodejno iz IBAN-a. Če ga poznate, ga lahko vnesete.</small>
+                    <label for="epc-information">Dodatna informacija (neobvezno)</label>
+                    <input id="epc-information" class="epc-text-input epc-data-input" data-bind="epcInformation"
+                        maxlength="70" autocomplete="off">
+                </div>
+                <div class="epc-actions-row">
+                    <button type="button" id="btn-epc-qr-png" class="action-btn action-btn-primary epc-btn epc-btn-download">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Prenesi EPC QR (PNG)</span>
+                    </button>
+                    <button type="button" id="btn-toggle-epc-inspect" class="action-btn epc-btn epc-btn-inspect" title="Prikaži surov zapis EPC QR">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        <span>Struktura kode</span>
+                        <span class="action-btn-pill" id="epc-pill-count" hidden></span>
+                    </button>
+                </div>
+
+                <div class="qr-terminal-card" id="epc-qr-inspect" hidden>
+                    <div class="qr-terminal-header">
+                        <div class="qr-terminal-title">
+                            <span class="qr-terminal-name">EPC-002 • UTF-8</span>
+                            <span class="qr-terminal-sub">11 vrstic</span>
+                        </div>
+                        <div class="qr-terminal-actions">
+                            <div class="qr-switch-group" role="tablist" aria-label="Način prikaza EPC QR">
+                                <button type="button" class="qr-switch-btn active" data-view="table" role="tab" aria-selected="true" title="Tabelarični prikaz z opisi polj">Tabela</button>
+                                <button type="button" class="qr-switch-btn" data-view="raw" role="tab" aria-selected="false" title="Dobesedno surovo besedilo z vrsticami">Surovo besedilo</button>
+                            </div>
+                            <button type="button" class="qr-copy-btn" id="btn-copy-epc-raw" title="Kopiraj surov zapis v odložišče">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span>Kopiraj</span>
+                            </button>
+                            <button type="button" class="qr-close-btn" id="btn-close-epc-inspect" aria-label="Zapri pregledovalnik">✕</button>
+                        </div>
+                    </div>
+                    <div class="qr-terminal-body" id="epc-qr-inspect-content">
+                        <span class="qr-inspect-empty">Vnesite ime in IBAN prejemnika za veljaven EPC QR zapis.</span>
+                    </div>
+                    <div class="qr-terminal-raw-wrap" id="epc-qr-inspect-raw-wrap" hidden>
+                        <div class="qr-raw-lines" id="epc-qr-inspect-raw-lines"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="epc-qr-preview" id="epc-qr-code" role="status" aria-live="polite">
+                Vnesite ime in IBAN prejemnika za EPC QR.
+            </div>
+        </section>
+
+        <section class="batch-import" aria-labelledby="batch-import-title">
+            <div class="batch-import-heading">
+                <h2 id="batch-import-title">Več nalogov iz CSV ali JSON</h2>
+                <p>Izberite ali spustite eno ali več datotek. Nalogi iz vseh datotek se združijo v en skupni PDF; skupaj lahko uvozite do 500 nalogov. Obrazec zgoraj ostane nespremenjen.</p>
+            </div>
+            <div class="batch-import-controls">
+                <div class="batch-import-field">
+                    <span class="batch-field-label" id="batch-file-label">Datoteke CSV ali JSON</span>
+                    <label class="batch-file-dropzone" id="batch-file-dropzone">
+                        <input id="batch-file" class="batch-file-input" type="file" multiple
+                            accept=".csv,.json,text/csv,application/json" aria-labelledby="batch-file-label"
+                            aria-describedby="batch-file-help">
+                        <span class="batch-file-dropzone-content">
+                            <svg class="batch-file-dropzone-icon" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                                stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 16V4"></path>
+                                <path d="m7 9 5-5 5 5"></path>
+                                <path d="M20 16.5v2A1.5 1.5 0 0 1 18.5 20h-13A1.5 1.5 0 0 1 4 18.5v-2"></path>
+                            </svg>
+                            <span class="batch-file-dropzone-title">Povlecite datoteke sem</span>
+                            <span class="batch-file-dropzone-action">ali kliknite tukaj za izbiro</span>
+                        </span>
+                        <span class="batch-file-name" id="batch-file-name" aria-live="polite">Datoteka ni izbrana</span>
+                    </label>
+                    <span class="batch-field-help" id="batch-file-help">Podprti sta .csv in .json; vse datoteke skupaj so lahko velike največ 5 MB. Uvoz se obdela v vašem brskalniku, datoteke se ne pošljejo na strežnik.</span>
+                </div>
+                <div class="batch-import-field batch-layout-field">
+                    <span>Razporeditev na papirju A4</span>
+                    <div class="batch-layout-controls">
+                        <select id="batch-layout">
+                            <option value="one">1 nalog na A4 (spodaj)</option>
+                            <option value="two">2 naloga na A4 (zgoraj in spodaj)</option>
+                            <option value="three">3 nalogi na A4 (največ)</option>
+                        </select>
+                        <div class="batch-layout-preview layout-one" id="batch-layout-preview" role="img"
+                            aria-label="Predogled: en UPN nalog na dnu lista A4">
+                            <svg viewBox="0 0 84 118" aria-hidden="true">
+                                <rect class="batch-layout-paper" x="1" y="1" width="82" height="116" rx="2"></rect>
+                                <g class="layout-slips layout-slips-one">
+                                    <rect x="4" y="79" width="76" height="37" rx="1"></rect>
+                                </g>
+                                <g class="layout-slips layout-slips-two">
+                                    <rect x="4" y="14" width="76" height="37" rx="1"></rect>
+                                    <rect x="4" y="67" width="76" height="37" rx="1"></rect>
+                                </g>
+                                <g class="layout-slips layout-slips-three">
+                                    <rect x="4" y="3" width="76" height="36" rx="1"></rect>
+                                    <rect x="4" y="41" width="76" height="36" rx="1"></rect>
+                                    <rect x="4" y="79" width="76" height="36" rx="1"></rect>
+                                </g>
+                            </svg>
+                            <span>A4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="batch-import-examples">
+                <span>Testni primeri (ne uporabite za plačilo):</span>
+                <a href="examples/primer-vec-nalogov.csv" download>CSV</a>
+                <a href="examples/primer-vec-nalogov.json" download>JSON</a>
+            </div>
+            <button type="button" class="action-btn action-btn-primary batch-export-btn" id="btn-batch-export" disabled>
+                <span>Ustvari skupni PDF</span>
+            </button>
+            <output class="batch-status" id="batch-status" role="status" aria-live="polite" aria-atomic="true" hidden></output>
+            <div class="batch-preview" id="batch-preview" hidden>
+                <p class="batch-preview-hint">Na ozkem zaslonu lahko predogled pomaknete levo/desno. Odprite »Podatki« za celoten nalog.</p>
+                <table>
+                    <caption>Predogled uvoženih nalogov</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Plačnik</th>
+                            <th scope="col">Prejemnik in IBAN</th>
+                            <th scope="col">Znesek</th>
+                            <th scope="col">Namen</th>
+                            <th scope="col">Datum plačila</th>
+                            <th scope="col">Vrsta</th>
+                            <th scope="col">Podrobnosti</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batch-preview-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- WIKI SECTION -->
+        <section class="wiki-section">
+            <h2>Koristne informacije in povezave</h2>
+            <p>Interaktivni referenčni priročnik za UPN QR po virih ZBS ter za ločen EPC QR format za SEPA plačila.</p>
+
+            <div class="wiki-accordion">
+                <!-- ACCORDION: SPLETNE POVEZAVE -->
+                <details class="wiki-details">
+                    <summary>
+                        <div class="summary-content">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            <span>Spletne povezave in viri</span>
+                        </div>
+                        <div class="summary-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="wiki-subheader" style="margin-top: 0;">Uradni viri in standardi</div>
+                        <ul class="wiki-link-list">
+                            <li><a href="https://www.zbs-giz.si/standardi-in-prirocniki/" target="_blank"
+                                    rel="noopener noreferrer">ZBS — Standardi in priročniki</a></li>
+                            <li><a href="https://www.zbs-giz.si/banke-in-hranilnice-s-1-1-2023-ukinjajo-storitev-brezplacnega-preverjanja-pravilnosti-qr-kode-na-obrazcu-upnqr/"
+                                    target="_blank" rel="noopener noreferrer">ZBS — Obvestilo o ukinitvi brezplačnega
+                                    preverjanja UPN QR</a></li>
+                            <li><a href="https://www.bsi.si/placila/kreditna-placila/upn" target="_blank"
+                                    rel="noopener noreferrer">Banka Slovenije — UPN</a></li>
+                            <li><a href="https://www.nlb.si/osebno/pomoc-in-orodja/placila/kako-izpolniti-upn"
+                                    target="_blank" rel="noopener noreferrer">NLB — Kako izpolniti UPN</a></li>
+                        </ul>
+
+                        <div class="wiki-subheader">Programska orodja in plačilni promet</div>
+                        <ul class="wiki-link-list">
+                            <li><a href="https://www.zbs-giz.si/placilni-promet/" target="_blank"
+                                    rel="noopener noreferrer">ZBS — Plačilni promet</a></li>
+                        </ul>
+
+                        <div class="wiki-subheader">Drugi UPN generatorji</div>
+                        <ul class="wiki-link-list">
+                            <li><a href="https://upn.b1.si/" target="_blank" rel="noopener noreferrer">UPN Generator —
+                                    B1</a></li>
+                            <li><a href="https://demo.podjetnikovpomocnik.net/UpnQr/" target="_blank"
+                                    rel="noopener noreferrer">Podjetnikov Pomočnik — UPN QR</a></li>
+                            <li><a href="https://upn.eksa.com/" target="_blank" rel="noopener noreferrer">UPN Generator
+                                    — EKSA</a></li>
+                            <li><a href="https://kibervarnost.si/upnqr/" target="_blank"
+                                    rel="noopener noreferrer">Kibervarnost — UPN QR</a></li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- ACCORDION 1: NAVODILA -->
+                <details class="wiki-details">
+                    <summary>
+                        <div class="summary-content">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span>Navodila za izpolnjevanje in QR koda</span>
+                        </div>
+                        <div class="summary-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="wiki-subheader">Pravila zapisovanja reference SI in RF</div>
+                        <p>V Sloveniji se za plačilni promet uporabljata standardizirani obliki reference — Model in
+                            Sklic.</p>
+                        <ul style="list-style: disc; margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li><strong>Model SI:</strong> Običajno sestavljen iz predpone SI in dveh kontrolnih številk
+                                (npr. SI12). Sklic za modelom lahko vsebuje do 20 numeričnih znakov, presledke ali
+                                vezaje. Za avtomatsko knjiženje je pravilnost Modela SI nujna (Modul 11/97 po standardih
+                                ZBS).</li>
+                            <li><strong>Model RF:</strong> Mednarodno podprt standard (ISO 11649). Sestavljen je iz
+                                oznake RF in dveh kontrolnih cifer, nato pa sledi podatek o sklicu, ki ima lahko do 21
+                                alfanumeričnih znakov in nima definirane strukture (razen izračuna kontrolne cifre, s
+                                katero tvorimo celotni RF).</li>
+                        </ul>
+
+                        <div class="wiki-subheader">Tehnična oblika kode UPNQR</div>
+                        <p>Aplikacija ustvari slovenski zapis UPN QR, ne splošnega SEPA QR. Vsebina je sestavljena iz
+                            20 vrstic v določenem vrstnem redu; vrstice so ločene z LF (Line Feed), zapis pa se konča
+                            z LF:</p>
+                        <ol style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li>Oznaka zapisa <code>UPNQR</code>.</li>
+                            <li>IBAN plačnika.</li>
+                            <li>Oznaka pologa (<code>X</code> ali prazno).</li>
+                            <li>Oznaka dviga (<code>X</code> ali prazno).</li>
+                            <li>Referenca plačnika.</li>
+                            <li>Ime plačnika.</li>
+                            <li>Naslov plačnika.</li>
+                            <li>Kraj plačnika.</li>
+                            <li>Znesek v centih kot 11-mestno število.</li>
+                            <li>Datum plačila v obliki <code>dd.mm.yyyy</code> ali prazno.</li>
+                            <li>Oznaka nujnosti (<code>X</code> ali prazno).</li>
+                            <li>Štirimestna koda namena.</li>
+                            <li>Namen plačila.</li>
+                            <li>Rok plačila v obliki <code>dd.mm.yyyy</code> ali prazno.</li>
+                            <li>IBAN prejemnika.</li>
+                            <li>Referenca prejemnika.</li>
+                            <li>Ime prejemnika.</li>
+                            <li>Naslov prejemnika.</li>
+                            <li>Kraj prejemnika.</li>
+                            <li>Trimestna kontrolna vsota: vsota dolžin prvih 19 vrstic, vključno z njihovim
+                                zaključnim znakom LF.</li>
+                        </ol>
+                        <p>Vsebina je kodirana v ISO-8859-2 z ECI 4; vsaka vrstica je ločena z LF, na koncu zapisa
+                            je še LF. QR simbol uporablja različico 15 in korekcijo napak M. Besedilna polja imajo
+                            omejitve dolžine, celotna vsebina pa največ 411 bajtov.</p>
+                        <p>UPN obrazec in njegovi PDF-ji uporabljajo izključno UPN QR. Spodaj je na voljo ločen EPC
+                            QR (SEPA), vmesnik znan tudi kot GiroCode; ta uporablja drugačen zapis. EPC je splošni
+                            standard za SEPA plačila, vendar podpora N26 ali druge banke ni zagotovljena — posamezno
+                            aplikacijo je treba preveriti posebej.</p>
+                        <p><a href="https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/quick-response-code-guidelines-enable-data-capture-initiation"
+                                target="_blank" rel="noopener noreferrer">European Payments Council — smernice za EPC
+                                QR pri SEPA kreditnih prenosih</a>. EPC opozarja, da ta splošna navodila niso primerna
+                            za vsak plačilni scenarij.</p>
+                    </div>
+                </details>
+
+                <!-- ACCORDION: REFERENCE SI IN RF -->
+                <details class="wiki-details">
+                    <summary>
+                        <div class="summary-content">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                                <line x1="9" y1="20" x2="15" y2="20"></line>
+                                <line x1="12" y1="4" x2="12" y2="20"></line>
+                            </svg>
+                            <span>Modeli referenc (SI in RF standardi)</span>
+                        </div>
+                        <div class="summary-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="wiki-subheader">Nacionalni Standard: Referenca SI</div>
+                        <p>Slovenski referenčni sistem, ki zahteva striktno Modul 11 preverjanje:</p>
+                        <ul style="list-style: disc; margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li><strong>Struktura:</strong> Začne se s 'SI', nato sledita 2 številki modela in do 22
+                                znakov dolg sklic.</li>
+                            <li><strong>Model 00:</strong> Prosta vsebina brez obvezne kontrolne številke, primerno za
+                                enostavne sklice.</li>
+                            <li><strong>Model 12:</strong> Zelo strog model fiksne dolžine pretežno za strojno
+                                obdelavo/OCR vrstice. Sestavljen iz 13 znakov, prvi del obvezno vključuje kontrolno
+                                številko na zadnjem mestu.</li>
+                            <li><strong>Model 99:</strong> Model brez kakršnekoli vsebine (prazna referenca `SI99`).
+                            </li>
+                            <li><strong>Model 05, 19, in ostali:</strong> Modeli, pri katerih se kontrolna številka
+                                nahaja na koncu različnih segmentov (odvisno od določenih ponderjev po ZBS). Aplikacija
+                                jih validira po generičnem Modulu 11 principu preverjanja zadnje celostne cifre.</li>
+                        </ul>
+
+                        <div class="wiki-subheader">Mednarodni Standard: Referenca RF (ISO 11649)</div>
+                        <p>Ob prihodu SEPA plačil priporočen mednarodni standard, ki omogoča alfanumerične znake:</p>
+                        <ul style="list-style: disc; margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li><strong>Struktura:</strong> Začne se z 'RF', takoj za tem sledita dve z matematiko
+                                izračunani kontrolni številki in do 21 znakov preostalega sklica.</li>
+                            <li><strong>Validacija Modul 97-10:</strong> Aplikacija prične preverjanje s premikom prvih
+                                štirih
+                                znakov (RFxx) na konec. Črke se pretvori v številke (A=10, B=11,...). Končno masivno
+                                število (obravnavano prek `BigInt`) se deli s 97 in pri tem preverja seštevek oziroma
+                                ostanek po pravilih ISO/IEC 7064. Zato vsako ponarejanje prekine proces vizualno.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- ACCORDION 2: KODE NAMENA -->
+                <details class="wiki-details">
+                    <summary>
+                        <div class="summary-content">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                </path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>SEPA Kode namena plačila (Slovar ISO 20022)</span>
+                        </div>
+                        <div class="summary-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="wiki-subheader"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Najpogostejše kode</span>
+                        </div>
+                        <div class="wiki-table-container">
+                            <table class="wiki-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;">Koda</th>
+                                        <th style="width: 25%;">Klasifikacija</th>
+                                        <th style="width: 25%;">Naziv / Oznaka</th>
+                                        <th style="width: 35%;">Opis</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wiki-tbody-purposes-top">
+                                    <!-- Rendered JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="wiki-subheader"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Vse kode namena in iskalnik</span>
+                            <span id="lang-switch-btn" data-lang="sl"
+                                style="cursor: pointer; font-size: 0.75rem; background: #e2e8f0; padding: 0.2rem 0.6rem; border-radius: 999px; color: #475569; font-weight: bold; border: 1px solid #cbd5e1; user-select: none;">
+                                SL / <span style="font-weight: normal; opacity: 0.6;">EN</span>
+                            </span>
+                        </div>
+                        <div class="wiki-search-box">
+                            <svg class="wiki-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="wikiSearchPurposes"
+                                placeholder="Hitro iskanje po kodi, opisu ali nazivu (npr. CHAR, najemnine)...">
+                        </div>
+                        <div class="wiki-table-container">
+                            <table class="wiki-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;">Koda</th>
+                                        <th style="width: 25%;">Klasifikacija</th>
+                                        <th style="width: 25%;">Naziv / Oznaka</th>
+                                        <th style="width: 35%;">Opis</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wiki-tbody-purposes-all">
+                                    <!-- Rendered JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- ACCORDION 3: VALUTE -->
+                <details class="wiki-details">
+                    <summary>
+                        <div class="summary-content">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                </path>
+                            </svg>
+                            <span>Standard ISO 4217 (Fiat valute sveta)</span>
+                        </div>
+                        <div class="summary-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="wiki-search-box">
+                            <svg class="wiki-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="wikiSearchCurrencies"
+                                placeholder="Poišči podprte lokalne prejemniške valute sveta...">
+                        </div>
+                        <div class="wiki-table-container">
+                            <table class="wiki-table">
+                                <thead>
+                                    <tr>
+                                        <th>ISO</th>
+                                        <th>Naziv Valute</th>
+                                        <th>Osnovna lokacija vezave</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wiki-tbody-currencies">
+                                    <!-- Rendered JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details class="wiki-details" id="about-app">
+                    <summary>
+                        <div class="summary-content">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            <span>O aplikaciji, zasebnost in tehnologije</span>
+                        </div>
+                        <div class="summary-chevron" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+                    <div class="details-body">
+                        <div class="wiki-subheader" style="margin-top: 0;">Lokalna obdelava in zasebnost</div>
+                        <p>Obrazec, preverjanje podatkov, UPN in EPC QR ter izvozi PDF in PNG se obdelajo v tem brskalniku.
+                            Podatki plačil se ne pošiljajo strežniku ali analitičnim storitvam. Vnosi se zaradi
+                            nadaljevanja dela shranjujejo v brskalnikov nešifrirani <code>localStorage</code>; na
+                            skupni napravi jih po uporabi izbrišite z gumbom »Novi nalog«.</p>
+                        <p>Stran in njene izvajalne knjižnice, pisave ter sredstva so vključeni v projekt. Po prvem
+                            uspešnem nalaganju jih servisni delavec predpomni, zato lahko nameščena aplikacija ob
+                            ustrezni podpori brskalnika deluje tudi brez povezave. Gostitelj spletne strani lahko
+                            prejme običajne tehnične podatke o zahtevkih (na primer IP in čas dostopa). Zunanje
+                            povezave se odprejo samo, če jih izberete.</p>
+
+                        <div class="wiki-subheader">Uporabljene tehnologije</div>
+                        <ul>
+                            <li><strong>HTML, CSS in JavaScript (ES modules):</strong> vmesnik in logika aplikacije,
+                                brez izvajalnega ogrodja ali obvezne omrežne storitve.</li>
+                            <li><strong>Service Worker in Cache API:</strong> namestitev kot PWA ter lokalno
+                                predpomnjenje izvajalnih datotek za uporabo brez povezave.</li>
+                            <li><strong>localStorage:</strong> lokalno samodejno shranjevanje obrazca; datuma
+                                plačila in roka se ne shranita.</li>
+                            <li><strong>Brskalniški API-ji:</strong> ustvarjanje datotek in prenos, platno za izvoz
+                                slik ter odložišče za kopiranje IBAN-a.</li>
+                            <li><strong>EPC QR:</strong> ločen SEPA kreditni prenos uporablja zapis 002, UTF-8/ECI 26
+                                in korekcijo napak M. UPN QR ostane v slovenskem formatu ZBS.</li>
+                        </ul>
+
+                        <div class="wiki-subheader">Knjižnice in pisave</div>
+                        <ul>
+                            <li><a href="https://github.com/nayuki/QR-Code-generator" target="_blank"
+                                    rel="noopener noreferrer"><strong>Nayuki QR Code generator 1.8.0</strong></a>: QR-koda (MIT).</li>
+                            <li><a href="https://github.com/Hopding/pdf-lib" target="_blank"
+                                    rel="noopener noreferrer"><strong>pdf-lib 1.17.1</strong></a>: ustvarjanje vektorskih PDF-jev (MIT).</li>
+                            <li><a href="https://github.com/Hopding/fontkit" target="_blank"
+                                    rel="noopener noreferrer"><strong>@pdf-lib/fontkit 1.1.1</strong></a>: vdelava pisav v PDF (MIT).</li>
+                            <li><a href="https://github.com/qq15725/modern-screenshot" target="_blank"
+                                    rel="noopener noreferrer"><strong>modern-screenshot 4.6.8</strong></a>: zajem prikaza za izvoz v PNG (MIT).</li>
+                            <li><a href="https://github.com/fontsource/fontsource" target="_blank"
+                                    rel="noopener noreferrer"><strong>Inter 5.3.0</strong></a>: pisava vmesnika, vključena lokalno v projekt; ne nalaga se z Google Fonts (SIL OFL 1.1).</li>
+                        </ul>
+                        <p>Licence in obvestila o izvajalnih knjižnicah so v mapi <code>js/vendor</code>; besedilo
+                            licence za pisavo Inter je v <code>fonts/inter/OFL.txt</code>. Za avtomatizirane razvojne
+                            teste se uporabljata Playwright 1.64 in ZXing 0.23.0; ti orodji nista del izvajalne
+                            aplikacije za obiskovalce.</p>
+                        <p>Programska oprema je licencirana pod <a href="LICENSE">PolyForm Noncommercial 1.0.0</a>.
+                            Aplikacija je trenutno na voljo brez plačila, vendar brezplačen dostop ni isto kot
+                            dovoljenje za komercialno uporabo ali nadaljnjo distribucijo programske opreme. Za
+                            komercialno uporabo je potrebno dovoljenje skrbnika projekta.</p>
+
+                        <div class="wiki-subheader">Viri za UPN</div>
+                        <p>Za tehnične zahteve uporabite uradne <a href="https://www.zbs-giz.si/standardi-in-prirocniki/"
+                                target="_blank" rel="noopener noreferrer">standarde in priročnike ZBS</a> ter
+                            <a href="https://www.bsi.si/placila/kreditna-placila/upn" target="_blank"
+                                rel="noopener noreferrer">informacije Banke Slovenije o UPN</a>. Navodilo ZBS »Navodilo za
+                                pripravo izpisa UPN QR registriranih izdajateljev za programerje« je izdano decembra
+                                2022; določa različico QR 15, način ECC-M, binarne podatke, ECI 4, velikost 35,98333
+                                mm z belim robom in omejitev 411 bajtov. <a
+                                    href="https://www.zbs-giz.si/banke-in-hranilnice-s-1-1-2023-ukinjajo-storitev-brezplacnega-preverjanja-pravilnosti-qr-kode-na-obrazcu-upnqr/"
+                                target="_blank" rel="noopener noreferrer">ZBS je objavil</a>, da so banke s koncem leta
+                            2022 ukinile brezplačno preverjanje
+                            pravilnosti QR-kode in tiska; objavljeni seznami preverjenih oziroma licenciranih
+                            izdajateljev odražajo stanje 31. 12. 2022. Za aktualne zahteve ter razpoložljivost
+                            preverjanja se obrnite na banko, pri kateri imate odprt transakcijski račun. Lokalni
+                            testi aplikacije niso uradna potrditev QR-kode.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+        <footer class="app-footer">
+            <div class="footer-support-card">
+                <div class="footer-support-content">
+                    <div class="footer-support-icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong>UPN QR Studio je 100% brezplačen in brez oglasov</strong>
+                        <p>Če vam orodje prihrani čas pri plačevanju in poslovanju, lahko z donacijo podprete delovanje strežnikov in razvoj novih brezplačnih orodij.</p>
+                    </div>
+                </div>
+                <div class="support-links">
+                    <a href="https://mihaknific.github.io/podpora" target="_blank" rel="noopener noreferrer"
+                        class="support-btn support-btn-primary" role="link" aria-label="Podprite razvoj projekta">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                        </svg>
+                        <span>Podpri projekt</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p class="footer-desc"><strong>UPN QR Studio</strong><br>Brezplačno, javno dostopno orodje za
+                        generiranje UPN nalogov in EPC QR plačilnih kod v vašem brskalniku.</p>
+                    <div class="footer-copyright">
+                        &copy; 2026 UPN QR Studio. Vse pravice pridržane. | <span style="white-space: nowrap;"><a href="https://mihaknific.github.io"
+                            target="_blank" rel="noopener noreferrer">mihaknific.github.io</a></span>
+                        | <span style="white-space: nowrap;"><a href="#about-app">O aplikaciji</a></span>
+                        <br>
+                        Kontakt: <a href="https://github.com/mihaknific/upn-generator/issues">GitHub Issues</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <div id="pop-payer-iban" popover>
+        <div class="popover-header">
+            <strong>IBAN plačnika</strong>
+            <button type="button" class="popover-close" popovertarget="pop-payer-iban" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Vpišite transakcijski račun plačnika v obliki IBAN (npr. SI56 XXXX XXXX XXXX XXX). To polje ni obvezno,
+                razen pri dvigu gotovine (pri pologu in humanitarnih nalogih pa ni dovoljeno).</p>
+        </div>
+    </div>
+
+    <div id="pop-payer-ref" popover>
+        <div class="popover-header">
+            <strong>Referenca plačnika</strong>
+            <button type="button" class="popover-close" popovertarget="pop-payer-ref" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Izberite <strong>model sklica</strong> in vpišite številko. Ikona <svg class="inline-icon" width="14"
+                    height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                    </path>
+                    <path d="m14 7 3 3"></path>
+                    <path d="M5 6v.01"></path>
+                    <path d="M19 13v.01"></path>
+                    <path d="M10 20v.01"></path>
+                    <path d="M19 19v.01"></path>
+                </svg> se prikaže ob napaki in vam pomaga izračunati kontrolne številke.</p>
+            <ul class="popover-list">
+                <li><strong>SI00 — Prosta vsebina</strong><br><small>Uporabite za poljubne sklice (npr. številka računa
+                        2024-05), ki jih je podjetje določilo po svoje. Tu sistem ničesar ne preverja ali
+                        spreminja.</small>
+                </li>
+                <li><strong>SI12 — Nacionalni standard (13 mest)</strong><br><small>Standard za strojno obdelavo.
+                        Številka se izračuna z utežmi. Če vtipkate manj kot 13 znakov, klik na <svg class="inline-icon"
+                            width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> doda vodilne ničle in izračuna zadnjo kontrolno številko, kar prepreči napake pri
+                        vnosu.</small></li>
+                <li><strong>SI11 / SI18 — Večdelni bančni sklic</strong><br><small>Večdelni sklic (številke ločene z
+                        vezaji). Vsak del dobi svojo kontrolno številko za preprečevanje tipkarskih napak. Ikona <svg
+                            class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> popravi vsak del posebej.</small></li>
+                <li><strong>SI05 — Modul 11 (ZBS)</strong><br><small>Bančni model po ZBS s kontrolno številko po modulu 11
+                        na prvem delu sklica. Klik na <svg class="inline-icon" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> izračuna pravilno kontrolno številko.</small></li>
+                <li><strong>RF — Mednarodni ISO 11649 standard</strong><br><small>Sodoben evropski standard za čezmejna
+                        plačila. Klik na <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> pred vašo številko doda oznako RF in dve kontrolni mesti.</small></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="pop-recipient-iban" popover>
+        <div class="popover-header">
+            <strong>IBAN prejemnika</strong>
+            <button type="button" class="popover-close" popovertarget="pop-recipient-iban" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Vpišite transakcijski račun prejemnika v obliki SI56 XXXX XXXX XXXX XXX (Slovenija) ali AAXX XXXX XXXX
+                (SEPA območje).</p>
+        </div>
+    </div>
+
+    <div id="pop-recipient-ref" popover>
+        <div class="popover-header">
+            <strong>Referenca prejemnika</strong>
+            <button type="button" class="popover-close" popovertarget="pop-recipient-ref" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Izberite <strong>model sklica</strong> in vpišite številko. Ikona <svg class="inline-icon" width="14"
+                    height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                    </path>
+                    <path d="m14 7 3 3"></path>
+                    <path d="M5 6v.01"></path>
+                    <path d="M19 13v.01"></path>
+                    <path d="M10 20v.01"></path>
+                    <path d="M19 19v.01"></path>
+                </svg> se prikaže ob napaki in vam pomaga izračunati kontrolne številke.</p>
+            <p><strong>Humanitarni nalog:</strong> referenco določi registrirani izdajatelj. Za prosto številčno
+                vsebino, na primer interno oznako društva, izberite SI00. Ne uporabljajte naključnega ali tujega sklica;
+                aplikacija reference ne ustvari samodejno.</p>
+            <ul class="popover-list">
+                <li><strong>SI00 — Prosta vsebina</strong><br><small>Uporabite za poljubne sklice (npr. številka računa
+                        2024-05), ki jih je podjetje določilo po svoje. Tu sistem ničesar ne preverja ali
+                        spreminja.</small>
+                </li>
+                <li><strong>SI12 — Nacionalni standard (13 mest)</strong><br><small>Standard za strojno obdelavo.
+                        Številka se izračuna z utežmi. Če vtipkate manj kot 13 znakov, klik na <svg class="inline-icon"
+                            width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> doda vodilne ničle in izračuna zadnjo kontrolno številko, kar prepreči napake pri
+                        vnosu.</small></li>
+                <li><strong>SI11 / SI18 — Večdelni bančni sklic</strong><br><small>Večdelni sklic (številke ločene z
+                        vezaji). Vsak del dobi svojo kontrolno številko za preprečevanje tipkarskih napak. Ikona <svg
+                            class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> popravi vsak del posebej.</small></li>
+                <li><strong>SI05 — Modul 11 (ZBS)</strong><br><small>Bančni model po ZBS s kontrolno številko po modulu 11
+                        na prvem delu sklica. Klik na <svg class="inline-icon" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> izračuna pravilno kontrolno številko.</small></li>
+                <li><strong>RF — Mednarodni ISO 11649 standard</strong><br><small>Sodoben evropski standard za čezmejna
+                        plačila. Klik na <svg class="inline-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z">
+                            </path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v.01"></path>
+                            <path d="M19 13v.01"></path>
+                            <path d="M10 20v.01"></path>
+                            <path d="M19 19v.01"></path>
+                        </svg> pred vašo številko doda oznako RF in dve kontrolni mesti.</small></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="pop-currency" popover>
+        <div class="popover-header">
+            <strong>Valuta</strong>
+            <button type="button" class="popover-close" popovertarget="pop-currency" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Izberite valuto plačila (standard ISO 4217). Na seznamu so vse trenutno veljavne svetovne fiat valute.
+            </p>
+        </div>
+    </div>
+
+    <div id="pop-amount" popover>
+        <div class="popover-header">
+            <strong>Znesek</strong>
+            <button type="button" class="popover-close" popovertarget="pop-amount" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Vpišite znesek plačila. Na obrazcu se izpiše z desno poravnavo, decimalno vejico in centi.</p>
+        </div>
+    </div>
+
+    <div id="pop-purpose-code" popover>
+        <div class="popover-header">
+            <strong>Koda namena</strong>
+            <button type="button" class="popover-close" popovertarget="pop-purpose-code" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Koda namena (npr. GDSV, SALA) je štirimestna oznaka po standardu ISO 20022, ki banki pomaga pri
+                avtomatski obdelavi plačila.</p>
+            <p>Za večino običajnih plačil uporabite privzeto kodo <strong>GDSV</strong> (Nakup blaga in storitev). Če
+                niste prepričani, lahko v Wiki razdelku spodaj poiščete podroben opis vseh kod.</p>
+        </div>
+    </div>
+
+    <div id="pop-transaction-type" popover>
+        <div class="popover-header">
+            <strong>Vrsta transakcije</strong>
+            <button type="button" class="popover-close" popovertarget="pop-transaction-type" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p><strong>Polog:</strong> Gotovinsko vplačilo na okencu. Pri pologu postane <strong>datum plačila
+                    obvezen</strong>, medtem ko se <strong>rok plačila</strong> in <strong>IBAN plačnika
+                    onemogočita</strong>.</p>
+            <p><strong>Dvig:</strong> Dvig gotovine z računa. Pri dvigu postaneta <strong>IBAN in datum plačila
+                    obvezna</strong>, medtem ko se <strong>IBAN prejemnika</strong> in <strong>rok plačila
+                    onemogočita</strong>.</p>
+            <p><strong>Humanitarni nalog:</strong> Namenjen izključno registriranim izdajateljem UPN QR. Znesek in
+                podatki plačnika niso obvezni, datum plačila se skrije, referenca prejemnika pa je obvezna in jo določi
+                izdajatelj. Koda `CHAR` in opis `DONACIJA` se predlagata samo, če ju uporabnik še ni vnesel.</p>
+        </div>
+    </div>
+
+    <div id="pop-urgency" popover>
+        <div class="popover-header">
+            <strong>Nujnost plačila</strong>
+            <button type="button" class="popover-close" popovertarget="pop-urgency" popovertargetaction="hide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popover-content">
+            <p>Označi nalog kot nujen. Izvršitev in morebitno provizijo določi banka; oznaka ne zagotavlja takojšnjega
+                nakazila.</p>
+            <p style="margin-top: 0.5rem; color: var(--studio-text-muted);">
+                <strong>Omejitve po pravilih ZBS:</strong> Oznake »Nujno« ni dovoljeno uporabiti pri pologu gotovine, dvigu gotovine ali pri humanitarnem nalogu.
+            </p>
+        </div>
+    </div>
+
+
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+</body>
+
+</html>

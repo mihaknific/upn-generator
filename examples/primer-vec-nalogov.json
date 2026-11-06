@@ -1,0 +1,28 @@
+{
+  "nalogi": [
+    {
+      "payerName": "ANA NOVAK",
+      "payerAddress": "CESTA 1",
+      "payerCity": "1000 LJUBLJANA",
+      "recipientName": "PRIMER D.O.O.",
+      "recipientAddress": "GLAVNA ULICA 1",
+      "recipientCity": "1000 LJUBLJANA",
+      "recipientIban": "GB82WEST12345698765432",
+      "amount": "12.34",
+      "purposeCode": "GDSV",
+      "purpose": "PLACILO RACUNA 101"
+    },
+    {
+      "payerName": "TESTNI PLACNIK 2",
+      "payerAddress": "CESTA 2",
+      "payerCity": "2000 MARIBOR",
+      "recipientName": "PRIMER D.O.O.",
+      "recipientAddress": "GLAVNA ULICA 1",
+      "recipientCity": "1000 LJUBLJANA",
+      "recipientIban": "GB82WEST12345698765432",
+      "amount": "25.00",
+      "purposeCode": "GDSV",
+      "purpose": "PLACILO RACUNA 102"
+    }
+  ]
+}

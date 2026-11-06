@@ -1,0 +1,28 @@
+{
+  "name": "UPN QR Studio",
+  "short_name": "UPN QR Studio",
+  "description": "Generiraj in natisni UPN QR plačilne naloge lokalno in varno.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FA4616",
+  "icons": [
+    {
+      "src": "assets/logo.svg",
+      "sizes": "640x640",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

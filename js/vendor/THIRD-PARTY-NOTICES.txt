@@ -1,0 +1,25 @@
+Runtime libraries and assets bundled with UPN QR Studio
+
+modern-screenshot 4.6.8
+License: MIT
+Copyright (c) 2021-present wxm
+License text: LICENSE-modern-screenshot-MIT.txt
+Source: https://github.com/qq15725/modern-screenshot
+
+pdf-lib 1.17.1
+License: MIT
+License text: LICENSE-pdf-lib-MIT.md
+Source: https://github.com/Hopding/pdf-lib
+
+@pdf-lib/fontkit 1.1.1
+License: MIT (as declared in the published npm package metadata)
+Source: https://github.com/Hopding/fontkit
+
+Project Nayuki QR Code generator 1.8.0
+License: MIT (see the source file header)
+Source: https://github.com/nayuki/QR-Code-generator
+
+Inter font 5.3.0
+License: SIL Open Font License 1.1
+License text: ../../fonts/inter/OFL.txt
+Source: https://github.com/fontsource/fontsource

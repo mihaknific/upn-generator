@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img" aria-labelledby="title desc">
+  <title id="title">QR znak — natančno poravnan</title>
+  <desc id="desc">Poravnana različica z ostrimi robovi in enotno mrežo.</desc>
+  <rect x="0" y="0" width="640" height="640" rx="134" fill="#FA4616"/>
+  <rect x="90" y="90" width="190" height="190" fill="#FFFFFF"/>
+<rect x="145.0" y="145.0" width="80" height="80" fill="#FA4616"/>
+<rect x="165.0" y="165.0" width="40" height="40" fill="#FFFFFF"/>
+  <rect x="360" y="90" width="190" height="190" fill="#FFFFFF"/>
+<rect x="415.0" y="145.0" width="80" height="80" fill="#FA4616"/>
+<rect x="435.0" y="165.0" width="40" height="40" fill="#FFFFFF"/>
+  <rect x="90" y="360" width="190" height="190" fill="#FFFFFF"/>
+<rect x="145.0" y="415.0" width="80" height="80" fill="#FA4616"/>
+<rect x="165.0" y="435.0" width="40" height="40" fill="#FFFFFF"/>
+  <rect x="360" y="360" width="34" height="34" fill="#FFFFFF"/>
+<rect x="412" y="360" width="34" height="34" fill="#FFFFFF"/>
+<rect x="516" y="360" width="34" height="34" fill="#FFFFFF"/>
+<rect x="360" y="412" width="34" height="34" fill="#FFFFFF"/>
+<rect x="464" y="412" width="34" height="34" fill="#FFFFFF"/>
+<rect x="516" y="412" width="34" height="34" fill="#FFFFFF"/>
+<rect x="412" y="464" width="34" height="34" fill="#FFFFFF"/>
+<rect x="464" y="464" width="34" height="34" fill="#FFFFFF"/>
+<rect x="360" y="516" width="34" height="34" fill="#FFFFFF"/>
+<rect x="464" y="516" width="34" height="34" fill="#FFFFFF"/>
+<rect x="516" y="516" width="34" height="34" fill="#FFFFFF"/>
+</svg>

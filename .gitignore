@@ -1,0 +1,16 @@
+# OS and IDE files
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+.local/
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+test-results/
+playwright-report/
+blob-report/
+font-preview.html

@@ -1,0 +1,31 @@
+{
+  "name": "upn-studio",
+  "version": "1.0.0",
+  "description": "Professional UPN QR Payment Slip Generator with Premium UX.",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "start": "npm run build && node tests/server.cjs dist",
+    "test": "npm run build && playwright test"
+  },
+  "keywords": [
+    "upn",
+    "qr",
+    "payment",
+    "slovenia",
+    "pdf"
+  ],
+  "author": "UPN Studio",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mihaknific/upn-generator"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@zxing/library": "0.23.0"
+  }
+}
