@@ -6,11 +6,11 @@
 
 ---
 
-## Ključne funkcije 🚀
+## Ključne funkcije
 
 - **PDF izvoz**: Vektorski PDF; na voljo sta izvoz za A4 in nalog v predvideni velikosti 210 × 99 mm.
 - **Več nalogov iz CSV/JSON**: Uvoz do 500 nalogov, preverjanje vsakega zapisa in skupni PDF z enim ali do tremi nalogi na A4.
-- **"Čarobna palčka" (Magic Wand) 🪄**: Samodejno prepoznavanje in popravljanje kontrolnih številk za SI (Modulo 11) in RF (Modulo 97) reference.
+- **"Čarobna palčka" (Magic Wand)**: Samodejno prepoznavanje in popravljanje kontrolnih številk za SI (Modulo 11) in RF (Modulo 97) reference.
 - **Datumi**: Datum plačila se ob odprtju obrazca predizpolni z današnjim datumom; rok plačila ostane prazen. Pri humanitarnem nalogu je datum plačila skrit in ni dovoljen.
 - **Temni način (Dark Mode)**: Sodoben videz s preprostim preklopom.
 - **Hitro kopiranje**: Gumb za kopiranje IBAN številk z vizualno potrditvijo.
@@ -21,6 +21,7 @@
 
 ## Pomembno pred uporabo
 
+- UPN QR ne podpira emojijev ali drugih znakov zunaj nabora ISO-8859-2; aplikacija jih zavrne, namesto da bi jih tiho spremenila.
 - Način **»Humanitarni«** je namenjen registriranemu izdajatelju UPN QR. Društvo ali donacija sama po sebi ne pomenita, da izdajatelj izpolnjuje pogoje. Pred uporabo načina preverite registracijo pri ZBS oziroma svoji banki.
 - Ne ugibajte reference prejemnika ali kode namena. Uporabite podatke, ki jih je določil prejemnik oziroma izdajatelj.
 - Oznaka »Nujno« je neobvezna pri običajnem plačilu; pri pologu, dvigu in humanitarnem nalogu ni dovoljena.
@@ -29,7 +30,7 @@
 - Koda projekta je licencirana pod PolyForm Noncommercial 1.0.0. Javna dostopnost aplikacije sama po sebi ne dovoljuje komercialne uporabe ali nadaljnje distribucije kode; za tak namen je potrebno ustrezno dovoljenje.
 - Aplikacija je trenutno na voljo brez plačila. »Brezplačno« opisuje ceno dostopa, ne pa dovoljenih namenov uporabe; licenca še vedno omejuje komercialno uporabo programske opreme.
 
-## Namestitev in uporaba 🛠️
+## Namestitev in uporaba
 
 ### Uporaba aplikacije
 
@@ -102,24 +103,24 @@ npm test
 
 README vsebuje navodila za uporabo in vzdrževanje, zato za trenutno velikost projekta zadošča kot javna dokumentacija za razvijalce. `.local/` je namenjena internim zapiskom, izključena je z `.gitignore` in se ne objavlja.
 
-## Kontakt in javljanje napak ✉️
+## Kontakt in javljanje napak
 Za prijavo težave ali predlog uporabite [GitHub Issues](https://github.com/mihaknific/upn-generator/issues).
 
-## Zasebnost 🔒
+## Zasebnost
 
 Vnosi obrazca se obdelujejo v brskalniku in samodejno shranijo v njegov `localStorage`, da se obrazec lahko obnovi po ponovnem odprtju. Shranjevanje se izvede 500 ms po zadnji spremembi; čakajoči zapis se shrani tudi ob skritju ali zaprtju strani. Datuma plačila in roka se ne shranita, zato se datum plačila ob ponovnem odprtju privzeto nastavi na aktualni datum. `localStorage` ni šifriran; do shranjenih podatkov lahko dostopa vsak, ki uporablja isti profil brskalnika. Na skupni napravi po uporabi kliknite »Nov nalog«. **Podatki iz uvožene CSV/JSON datoteke se obdelajo samo v pomnilniku trenutnega zavihka in se ne shranijo v `localStorage`.** Aplikacija podatkov o plačilih ne pošilja tretji osebi.
 
 ---
 
 <a name="english-version"></a>
-# English Version 🌍
+# English Version
 
 **UPN QR Studio** is a browser-based tool for preparing UPN QR payment slips in Slovenia. QR codes and PDFs are generated locally in the browser.
 
-### Key Features 💎
+### Key Features
 - **PDF export**: Vector PDF output for A4 and the intended 210 × 99 mm slip size; exact printed size still depends on print settings.
 - **Batch CSV/JSON import**: Validate up to 500 records and export one combined PDF with one or up to three slips per A4 page.
-- **Magic Wand 🪄**: Intelligent auto-correction for SI (ISO 7064 Mod 11-2) and RF (ISO 11649 Mod 97-10) check digits.
+- **Magic Wand**: Intelligent auto-correction for SI (ISO 7064 Mod 11-2) and RF (ISO 11649 Mod 97-10) check digits.
 - **Smart Formatting**: Automatic uppercase conversion while typing.
 - **Dates**: The payment date defaults to today and the due date stays empty. Neither date is saved; the payment date is hidden and disallowed in humanitarian mode.
 - **Dark Mode**: High-contrast modern interface with persistent settings.
@@ -130,6 +131,7 @@ UPN QR payloads use ISO-8859-2 bytes with ECI assignment 4. The QR matrix is gen
 
 ### Important Before Use
 
+- UPN QR does not support emojis or other characters outside ISO-8859-2; the app rejects them rather than silently changing them.
 - The **Humanitarian** mode is for a registered UPN QR issuer. Being a charity or collecting a donation does not by itself establish eligibility; confirm registration with ZBS or your bank.
 - Do not guess the recipient reference or purpose code; use the values supplied by the recipient or issuer.
 - The urgent-payment flag is optional for ordinary payments and is not allowed for cash deposit, cash withdrawal, or humanitarian mode.
@@ -150,10 +152,10 @@ npm test
 
 The tests run the full application suite in Chromium and a QR-generation smoke test in Firefox and WebKit. They also check service-worker caching, offline operation, updates, the GitHub Pages project path, and the distribution package. CI runs the same browsers on Ubuntu. The suite does not cover every browser version, mobile device, or iOS/Safari PWA installation. Passing local tests do not constitute official UPN/EPC QR approval; ask your bank for current requirements and test the QR in the intended banking app.
 
-## Feedback & Bug Reporting ✉️
+## Feedback & Bug Reporting
 For bug reports or suggestions, use [GitHub Issues](https://github.com/mihaknific/upn-generator/issues).
 
-## Privacy Statement 🔒
+## Privacy Statement
 Payment data is processed in the browser and form entries are automatically saved in that browser's `localStorage` so the form can be restored after reload. Saves are debounced until 500 ms after the last change, and pending changes are flushed when the page is hidden or closed. Payment and due dates are intentionally not persisted, so the payment date gets a fresh default on reload. Browser `localStorage` is persistent and is not encrypted by this app; anyone with access to the same browser profile may be able to access saved entries. Use the reset button to clear the saved form data, especially on a shared device. **Imported CSV/JSON records are processed only in the current tab's memory and are not saved to `localStorage`.** The app does not send payment data to a third-party service. All runtime assets are bundled with the project, and the Content Security Policy restricts application resources and connections to the same origin. External references are ordinary links and are only visited if a user chooses to open them.
 
 When the site is hosted online, the hosting provider still receives normal requests for the site and may log technical connection data such as IP address and request time. This app does not make visitors anonymous to its hosting provider.
@@ -223,6 +225,6 @@ GitHub Pages does not allow custom HTTP security headers. The application includ
 
 The source code is licensed under [PolyForm Noncommercial 1.0.0](./LICENSE). Public access to the app does not grant permission for commercial use or redistribution of the source; contact the maintainer for permission for those purposes. Third-party notices and applicable license texts are included with the project in [`js/vendor/THIRD-PARTY-NOTICES.txt`](./js/vendor/THIRD-PARTY-NOTICES.txt) and the bundled license files.
 
-## Licenca ⚖️
+## Licenca
 © 2026 **UPN QR Studio**. Vse pravice pridržane.
 Licencirano pod [PolyForm Noncommercial 1.0.0](LICENSE) — koda je javno dostopna, lahko jo pregledujete, spreminjate in delite, vendar je **komercialna uporaba prepovedana**.

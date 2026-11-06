@@ -779,7 +779,11 @@ test('ime prejemnika se ne odreze in meja 33 znakov je preverjena', async ({ pag
     await page.locator('[data-bind="recipientName"]').fill('A'.repeat(34));
     await expect(page.locator('#qr-code img')).toHaveCount(0);
     await expect(page.locator('#qr-code')).toContainText('34/33');
-    await expect(page.locator('[data-bind="recipientName"] + .error-msg')).toContainText('34/33');
+    const errorMessage = page.locator('[data-bind="recipientName"] + .error-msg');
+    await expect(errorMessage).toContainText('34/33');
+    const warningIcon = await errorMessage.evaluate(element => getComputedStyle(element, '::before'));
+    expect(warningIcon.content).toBe('"!"');
+    expect(warningIcon.clipPath).toContain('polygon');
 });
 
 test('namen placila ne sme presegati 42 znakov', async ({ page }) => {
@@ -976,7 +980,7 @@ test('QR ne spreminja tiho imen s sumniki', async ({ page }) => {
 
 test('nepodprt znak blokira QR namesto tihe odstranitve', async ({ page }) => {
     await fillValidPayment(page);
-    await page.locator('[data-bind="recipientName"]').fill('DRUSTVO 🚀');
+    await page.locator('[data-bind="recipientName"]').fill('DRUSTVO \u{1F680}');
     await expect(page.locator('#qr-code img')).toHaveCount(0);
     await expect(page.locator('#qr-code')).toContainText('QR ni veljaven');
     await expect(page.locator('#global-warning-list')).toContainText('niso podprti v ISO-8859-2');

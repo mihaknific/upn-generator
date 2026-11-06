@@ -845,7 +845,7 @@
     }
 
     .error-msg {
-        color: #ca8a04;
+        color: var(--studio-warning-text);
         font-size: 0.75rem;
         margin-top: 0.25rem;
         display: none;
@@ -853,7 +853,20 @@
     }
 
     .error-msg::before {
-        content: '⚠️ ';
+        content: '!';
+        display: inline-grid;
+        place-items: center;
+        width: 0.9rem;
+        height: 0.85rem;
+        margin-right: 0.2rem;
+        padding-top: 0.15rem;
+        background: var(--studio-warning-text);
+        color: var(--studio-warning-bg);
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+        font-size: 0.65rem;
+        font-weight: 800;
+        line-height: 1;
+        vertical-align: -0.05rem;
     }
 
     form input.has-error+.error-msg,
